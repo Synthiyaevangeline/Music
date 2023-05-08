@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Music.demo.Model.Music;
 import com.Music.demo.Service.MusicService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 public class MusicController {
 		@Autowired
 		MusicService musicService;
+		@Tag(name="Get Mapping For Music",description="Get All Music")
 		@GetMapping("/Music")
 		public List<Music> getAllMusics()
 		{
@@ -76,6 +79,28 @@ public class MusicController {
 		{
 			return musicService.fetchMusicByArtistnmae(artistname);
 		}
-		
+		@DeleteMapping("/deleteMusicByName/{artistname}")
+	    public String deleteMusicByName(@PathVariable String artistname)
+	    {
+	 	   int result = musicService.deleteMusicByName(artistname);
+	 	   if(result>0)
+	 		     return "Music record deleted";
+	 	   else
+	 		     return "Problem occured while deleting";
+	    }
+	    @PutMapping("/updateMusicByName/{songname}/{artistname}")
+	    public String updateMusicByName(@PathVariable String songname,String artistname)
+	    {
+	 	   int res = musicService.updateMusicByName(songname, artistname);
+	 	   if(res>0)
+	 		      return "Music record updated";
+	 	   else
+	 		    return "Problem occured";
+	    }
+	    @GetMapping("/fetchMusicBySongName/{songname}")
+	    public List<Music> fetchMusicByName(@PathVariable String songname)
+	    {
+	    	return musicService.fetchMusicByName(songname);
+	    }
 }
 

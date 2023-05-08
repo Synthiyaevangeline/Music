@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.Music.demo.Model.Music;
 import com.Music.demo.Repository.MusicRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class MusicService {
 		@Autowired
@@ -57,7 +59,7 @@ public class MusicService {
 		}
 		public List<Music> paginateAndSorting(int offset,int pageSize,String songname)
 		{
-			Page<Music> obj=musicRepository.findAll(PageRequest.of(offset,pageSize,Sort.by(songname).ascending()));
+			Page<Music> obj=musicRepository.findAll(PageRequest.of(offset,pageSize,Sort.by(songname).descending()));
 			return obj.getContent();
 		}
 		public List<Music> fetchPrefix(String prefix) 
@@ -73,6 +75,20 @@ public class MusicService {
 		public List<Music> fetchMusicByArtistnmae(String artistname)
 		{
 			return musicRepository.findByArtistname(artistname);
+		}
+		@Transactional 
+		public int deleteMusicByName(String artistname)
+		{
+	   	return musicRepository.deleteMusicByName(artistname);
+		}
+		@Transactional
+		public int updateMusicByName(String songname,String artistname)
+		{
+			return musicRepository.updateMusicByName(songname, artistname);
+		}
+		public List<Music> fetchMusicByName(String songname) {
+			
+			return musicRepository.fetchMusicByName(songname);
 		}
 		
 	}
